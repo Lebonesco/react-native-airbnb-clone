@@ -46,27 +46,43 @@ class CreateEvent extends Component {
 
     this.state = {
       privacyOption: 'private',
-      //location: props.navigation.state.params.listing.location,
       loading: false,
+      title: "",
+      date: "",
+      description: "",
     };
     
     this.listCreated = false;
     this.selectPrivacyOption = this.selectPrivacyOption.bind(this);
-    this.handleLocationChange = this.handleLocationChange.bind(this);
+    this.handleTitleChange = this.handleTitleChange.bind(this);
+    this.handleDateChange = this.handleDateChange.bind(this);
+    this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
     this.handleCreateEvent = this.handleCreateEvent.bind(this);
   }
 
   componentWillUnmount() {
     const { navigation } = this.props;
-    navigation.state.params.onCreateEventClose(navigation.state.params.listing.id, this.listCreated);
+    navigation.state.params.onCreateEventClose({
+      'name': this.state.title,
+      'time': this.state.date,
+      'description': this.state.description,
+    }, true);
   }
 
   selectPrivacyOption(privacyOption) {
     this.setState({privacyOption});
   }
 
-  handleLocationChange(location) {
-    this.setState({location});
+  handleTitleChange(title) {
+    this.setState({title});
+  }
+
+  handleDateChange(date) {
+    this.setState({date});
+  }
+
+  handleDescriptionChange(description) {
+    this.setState({description});
   }
 
   handleCreateEvent() {
@@ -98,61 +114,54 @@ class CreateEvent extends Component {
                 labelText="Title"
                 labelTextSize={16}
                 labelTextWeight="400"
+                inputType="text"
                 labelColor={colors.lightBlack}
                 textColor={colors.lightBlack}
-                placeholder={location}
+                placeholder="What's the event called?"
                 defaultValue={location}
+                customStyle={{marginBottom: 10}}
                 borderBottomColor={colors.gray06}
-                inputType="email"
-                inputStyle={{fontSize: 18, fontWeight: '400', paddingBottom: 30}}
-                onChangeText={this.handleLocationChange}
+                inputStyle={{fontSize: 18, fontWeight: '600', paddingBottom: 5}}
+                onChangeText={this.handleTitleChange}
                 showCheckmark={false}
                 autoFocus={true}
               />
             </View>
-            <View style={styles.privacyOptions}>
-              <Text style={styles.privacyHeading}>Privacy</Text>
-              <TouchableHighlight
-                onPress={() => this.selectPrivacyOption('public')}
-                style={styles.privacyOptionItem}
-                underlayColor={colors.gray01}
-              >
-                <View>
-                  <Text style={styles.privacyOptionTitle}>Public</Text>
-                  <Text style={styles.privacyOptionDescription}>Visible to everyone and included on your public Airbnb profile.</Text>
-                  <View style={styles.privacyRadioInput}>
-                    <RadioInput
-                      backgroundColor={colors.gray07}
-                      borderColor={colors.gray05}
-                      selectedBackgroundColor={colors.green01}
-                      selectedBorderColor={colors.green01}
-                      iconColor={colors.white}
-                      selected={privacyOption === 'public'}
-                    />
-                  </View>
-                </View>
-              </TouchableHighlight>
-              <View style={styles.divider}></View>
-              <TouchableHighlight
-                onPress={() => this.selectPrivacyOption('private')}
-                style={styles.privacyOptionItem}
-                underlayColor={colors.gray01}
-              >
-                <View>
-                  <Text style={styles.privacyOptionTitle}>Private</Text>
-                  <Text style={styles.privacyOptionDescription}>Visible only to you and any friends you invite.</Text>
-                  <View style={styles.privacyRadioInput}>
-                    <RadioInput
-                      backgroundColor={colors.gray07}
-                      borderColor={colors.gray05}
-                      selectedBackgroundColor={colors.green01}
-                      selectedBorderColor={colors.green01}
-                      iconColor={colors.white}
-                      selected={privacyOption === 'private'}
-                    />
-                  </View>
-                </View>
-              </TouchableHighlight>
+            <View style={styles.inputWrapper}>
+              <InputField
+                labelText="Date"
+                inputType="text"
+                labelTextSize={16}
+                labelTextWeight="400"
+                labelColor={colors.lightBlack}
+                textColor={colors.lightBlack}
+                placeholder="When's this thing happening?"
+                defaultValue={location}
+                customStyle={{marginBottom: 10}}
+                borderBottomColor={colors.gray06}
+                inputStyle={{fontSize: 18, fontWeight: '600', paddingBottom: 5}}
+                onChangeText={this.handleDateChange}
+                showCheckmark={false}
+                autoFocus={true}
+              />
+            </View>
+            <View style={styles.inputWrapper}>
+              <InputField
+                labelText="Description"
+                inputType="text"
+                labelTextSize={16}
+                customStyle={{marginBottom: 10}}
+                labelTextWeight="400"
+                labelColor={colors.lightBlack}
+                textColor={colors.lightBlack}
+                placeholder="In a few words say what it's about?"
+                defaultValue={location}
+                borderBottomColor={colors.gray06}
+                inputStyle={{fontSize: 18, fontWeight: '600'}}
+                onChangeText={this.handleDescriptionChange}
+                showCheckmark={false}
+                autoFocus={true}
+              />
             </View>
           </View>
         </ScrollView>
@@ -164,7 +173,7 @@ class CreateEvent extends Component {
             background={colors.green01}
             borderColor="transparent"
             iconPosition="left"
-            disabled={!location}
+            disabled={false}
             loading={this.state.loading}
             icon={<View style={styles.buttonIcon}><FontAwesomeIcon name="angle-right" color={colors.white} size={30} /></View>}
             handleOnPress={this.handleCreateEvent}

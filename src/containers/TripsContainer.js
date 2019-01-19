@@ -41,17 +41,29 @@ const events = [
 export default class InboxContainer extends Component {
   constructor(props) {
     super(props);
-    
+    this.state = {
+      events: events,
+    }
+
     this.handleOpenEvent = this.handleOpenEvent.bind(this);
+    this.onCreateEventClose = this.onCreateEventClose.bind(this);
+  }
+
+  onCreateEventClose(event, evenCreated) {
+    let { events } = this.state;
+    if (true) {
+      events.push(event);
+    }
+    this.setState({events});
   }
 
   handleOpenEvent(event) {
     const { navigate } = this.props.navigation;
-    navigate('CreateEvent')
+    navigate('CreateEvent', {onCreateEventClose: this.onCreateEventClose});
   }
 
   get Events() {
-    return events.map((event, idx) => {
+    return this.state.events.map((event, idx) => {
       return (
         <ListItem style={{borderBottomWidth:0, marginBottom: -10}}>
         <TouchableHighlight
@@ -62,11 +74,10 @@ export default class InboxContainer extends Component {
           <View>
             <Text style={styles.title}>{event.name}</Text>
             <Text style={styles.time}>{event.time}</Text>
-            <Text style={styles.description}>This is a brief description
-                              of what the event is</Text>
+            <Text style={styles.description}>{ event.description ? event.description : "This is a brief description of what the event is"}</Text>
             <View style={{flexDirection: 'row', marginTop: 3}}>
               <Icon color={colors.green01} name="users" size={14}/>
-              <Text style={{fontWeight: '800', marginLeft: 5, color: colors.green01}}>{event.people}</Text>
+              <Text style={{fontWeight: '800', marginLeft: 5, color: colors.green01}}>{event.people ? event.people : 0}</Text>
             </View>
           </View>
         </TouchableHighlight>

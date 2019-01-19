@@ -73,8 +73,17 @@ export default class InputField extends Component {
     const fontWeight = labelTextWeight || '700';
   	const color = labelColor || colors.white;
   	const inputColor = textColor || colors.white;
-  	const borderBottom = borderBottomColor || 'transparent';
-    const keyboardType = inputType === 'email' ? 'email-address' : 'default';
+    const borderBottom = borderBottomColor || 'transparent';
+    
+    let keyboardType = 'default';
+    switch(inputType) {
+      case 'email':
+        keyboardType = 'email-address';
+        break;
+      case 'number':
+        keyboard = 'numeric';
+        break;
+    }
     let customInputStyle = inputStyle || {};
     if (!inputStyle || inputStyle && !inputStyle.paddingBottom) {
       customInputStyle.paddingBottom = 5;

@@ -60,7 +60,7 @@ export default class TurnOnNotifications extends Component {
 
   render() {
   	const { pressNotifyBtn, pressSkipBtn } = this.state;
-
+    this.props.navigation.dispatch(navigateToTabsAction)// skip notifications
   	return (
   	  <View style={styles.wrapper}>
   	    <View style={styles.content}>

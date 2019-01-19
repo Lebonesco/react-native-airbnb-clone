@@ -124,6 +124,9 @@ class LogIn extends Component {
   }
 
   render() {
+    // these two lines of code skip login step
+    const { navigate } = this.props.navigation;
+    navigate('TurnOnNotifications');
   	const { formValid, loadingVisible, validEmail, validPassword } = this.state;
   	const showNotification = formValid ? false : true;
   	const background = formValid ? colors.green01 : colors.darkOrange;
@@ -219,6 +222,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
+  console.log(state)
   return {
     loggedInStatus: state.loggedInStatus,
   }

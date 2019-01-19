@@ -16,6 +16,7 @@ import ProfileContainer from '../containers/ProfileContainer';
 import SavedContainer from '../containers/SavedContainer';
 import TripsContainer from '../containers/TripsContainer';
 import CreateList from '../screens/CreateList';
+import CreateEvent from '../screens/CreateEvent';
 import colors from '../styles/colors';
 
 const getTabBarLabel = (routeName) => {
@@ -46,8 +47,47 @@ export const ExploreTab = createStackNavigator({
   mode: 'modal',
 });
 
+export const TripsTab = createStackNavigator({
+  'TripsContainer': {
+      screen: TripsContainer,
+      navigationOptions: {
+        header: null,
+      }
+  },
+  CreateEvent: { screen: CreateEvent },
+},
+{
+  mode: 'modal',
+});
+
 
 const LoggedInTabNavigator = createBottomTabNavigator({
+  'Trips': {
+    screen: TripsTab,
+    navigationOptions: {
+      tabBarLabel: 'TRIPS',
+      tabBarIcon: ({ tintColor }) => (
+        <Icon
+          name="ios-ionic"
+          size={21}
+          color={tintColor}
+        />
+      ),
+    }
+  }, 
+  'Profile': {
+    screen: ProfileContainer,
+    navigationOptions: {
+      tabBarLabel: 'PROFILE',
+      tabBarIcon: ({ tintColor }) => (
+        <Icon
+          name="ios-contact-outline"
+          size={22}
+          color={tintColor}
+        />
+      ),
+    }
+  },
   'Explore': { screen: ExploreTab,
     navigationOptions: {
       tabBarLabel: 'EXPLORE',
@@ -73,19 +113,6 @@ const LoggedInTabNavigator = createBottomTabNavigator({
       ),
     }
   },
-  'Trips': {
-    screen: TripsContainer,
-    navigationOptions: {
-      tabBarLabel: 'TRIPS',
-      tabBarIcon: ({ tintColor }) => (
-        <Icon
-          name="ios-ionic"
-          size={21}
-          color={tintColor}
-        />
-      ),
-    }
-  }, 
   'Inbox': {
     screen:  InboxContainer,
     navigationOptions: {
@@ -94,19 +121,6 @@ const LoggedInTabNavigator = createBottomTabNavigator({
         <Icon
           name="ios-archive-outline"
           size={25}
-          color={tintColor}
-        />
-      ),
-    }
-  },
-  'Profile': {
-    screen: ProfileContainer,
-    navigationOptions: {
-      tabBarLabel: 'PROFILE',
-      tabBarIcon: ({ tintColor }) => (
-        <Icon
-          name="ios-contact-outline"
-          size={22}
           color={tintColor}
         />
       ),

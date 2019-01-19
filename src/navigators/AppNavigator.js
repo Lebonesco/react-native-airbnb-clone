@@ -12,6 +12,7 @@ import {
   createNavigationPropConstructor,
   createNavigationReducer,
   initializeListeners,
+  createReduxBoundAddListener,
 } from 'react-navigation-redux-helpers';
 import LoggedOut from '../screens/LoggedOut';
 import LoggedIn from '../screens/LoggedIn';
@@ -34,10 +35,12 @@ class AppWithNavigationState extends Component {
   }
 
   render() {
-    const navigation = createNavigationPropConstructor('root')(
-      this.props.dispatch,
-      this.props.nav,
-    );
+    let dispatch = this.props.dispatch;
+    const navigation = {
+      dispatch,
+      state: this.props.nav,
+      addListener: createReduxBoundAddListener('root'),
+    };
     return <AppNavigator navigation={navigation} />;
   }
 

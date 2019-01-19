@@ -76,7 +76,7 @@ export default class ExploreContainer extends Component {
     });
   }
 
-  render() {
+  render() {    
     return (
       <View style={styles.wrapper}>
         <SearchBar />

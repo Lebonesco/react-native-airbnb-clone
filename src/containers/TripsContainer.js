@@ -11,6 +11,7 @@ import {
   StyleSheet,
   ScrollView,
   SafeAreaView,
+  TouchableOpacity,
   TouchableHighlight,
 } from 'react-native';
 import colors from '../styles/colors';
@@ -46,7 +47,9 @@ export default class InboxContainer extends Component {
     }
 
     this.handleOpenEvent = this.handleOpenEvent.bind(this);
+    this.handleCreateEvent = this.handleCreateEvent.bind(this);
     this.onCreateEventClose = this.onCreateEventClose.bind(this);
+    this.handleSignInEvent = this.handleSignInEvent.bind(this);
   }
 
   onCreateEventClose(event, evenCreated) {
@@ -57,7 +60,19 @@ export default class InboxContainer extends Component {
     this.setState({events});
   }
 
-  handleOpenEvent(event) {
+  handleSignInEvent(eventId) {
+    alert("adding user to: ", eventId)
+    const { events } = this.state;
+    events[eventId].people += 1;
+    this.setState({events});
+  }
+
+  handleOpenEvent(eventId) {
+    const { navigate } = this.props.navigation;
+    navigate('Event', {handleSignInEvent: this.handleSignInEvent, eventId: eventId});
+  }
+
+  handleCreateEvent(event) {
     const { navigate } = this.props.navigation;
     navigate('CreateEvent', {onCreateEventClose: this.onCreateEventClose});
   }
@@ -66,13 +81,13 @@ export default class InboxContainer extends Component {
     return this.state.events.map((event, idx) => {
       return (
         <ListItem style={{borderBottomWidth:0, marginBottom: -10}}>
-        <TouchableHighlight
+        <TouchableOpacity
           style={styles.card}
           key={`event-item-${idx}`}
-          onPress={this.handleOpenEvent}
+          onPress={() => this.handleOpenEvent(idx)}
         >
           <View>
-            <Text style={styles.title}>{event.name}</Text>
+            <Text style={styles.title}>{event.name ? event.name : "Untitled"}</Text>
             <Text style={styles.time}>{event.time}</Text>
             <Text style={styles.description}>{ event.description ? event.description : "This is a brief description of what the event is"}</Text>
             <View style={{flexDirection: 'row', marginTop: 3}}>
@@ -80,7 +95,7 @@ export default class InboxContainer extends Component {
               <Text style={{fontWeight: '800', marginLeft: 5, color: colors.green01}}>{event.people ? event.people : 0}</Text>
             </View>
           </View>
-        </TouchableHighlight>
+        </TouchableOpacity>
         </ListItem>
       )
     })
@@ -92,8 +107,8 @@ export default class InboxContainer extends Component {
         <ScrollView scrollEventThrottle={16}>
           <View style={{flexDirection: 'row', marginTop: 35}}>
             <Text style={styles.header}>Event List</Text>
-            <TouchableHighlight
-              onPress={this.handleOpenEvent}
+            <TouchableOpacity
+              onPress={this.handleCreateEvent}
               style={{position: 'absolute', right: 21, bottom: 5}}
             >
               <Icon 
@@ -102,7 +117,7 @@ export default class InboxContainer extends Component {
                 color={colors.gray04} 
 
                 />
-            </TouchableHighlight>
+            </TouchableOpacity>
           </View>
         <List>
           {this.Events}
@@ -143,7 +158,7 @@ const styles = StyleSheet.create({
   },
   time: {
   	color: colors.gray04,
-  	marginTop: 4,
+  	marginTop: 2,
   	marginBottom: 2,
   	fontSize: 12,
   	fontWeight: '300',

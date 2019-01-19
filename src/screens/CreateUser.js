@@ -25,7 +25,7 @@ import InputField from '../components/form/InputField';
 import RadioInput from '../components/form/RadioInput';
 import RoundedButton from '../components/buttons/RoundedButton';
 
-class CreateEvent extends Component {
+class CreateUser extends Component {
   static navigationOptions = ({ navigation }) => ({
     tabBarVisible: false,
     headerLeft: <TouchableOpacity
@@ -47,25 +47,32 @@ class CreateEvent extends Component {
     this.state = {
       privacyOption: 'private',
       loading: false,
-      title: "",
-      date: "",
-      description: "",
+      name: "",
+      nickName: "",
+      phone: "",
+      email: "",
+      nameValid: false,
+      nickNameValid: false,
+      emailValid: false,
+      phoneValid: false,
     };
     
     this.listCreated = false;
     this.selectPrivacyOption = this.selectPrivacyOption.bind(this);
-    this.handleTitleChange = this.handleTitleChange.bind(this);
-    this.handleDateChange = this.handleDateChange.bind(this);
-    this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
+    this.handleNameChange = this.handleNameChange.bind(this);
+    this.handleNickNameChange = this.handleNickNameChange.bind(this);
+    this.handleEmailChange = this.handleEmailChange.bind(this);
+    this.handlePhoneChange = this.handlePhoneChange.bind(this);
     this.handleCreateEvent = this.handleCreateEvent.bind(this);
-  }
+}
 
   componentWillUnmount() {
     const { navigation } = this.props;
-    navigation.state.params.onCreateEventClose({
-      'name': this.state.title,
-      'time': this.state.date,
-      'description': this.state.description,
+    const { name, nickName, phone, email } = this.state;
+    navigation.state.params.onCreateUserClose({
+      'name': name,
+      "phone": phone,
+      "email": email,
     }, this.listCreated);
   }
 
@@ -73,16 +80,20 @@ class CreateEvent extends Component {
     this.setState({privacyOption});
   }
 
-  handleTitleChange(title) {
-    this.setState({title});
+  handleNameChange(name) {
+    this.setState({name, nameValid: true});
   }
 
-  handleDateChange(date) {
-    this.setState({date});
+  handleNickNameChange(nickName) {
+    this.setState({nickName, nickNameValid: true});
   }
 
-  handleDescriptionChange(description) {
-    this.setState({description});
+  handleEmailChange(email) {
+    this.setState({email, emailValid: true});
+  }
+
+  handlePhoneChange(phone) {
+      this.setState({phone, phoneValid: true});
   }
 
   handleCreateEvent() {
@@ -99,67 +110,85 @@ class CreateEvent extends Component {
   }
 
   render() {
-    const { privacyOption, location } = this.state;
+    const { privacyOption, location, nameValid, phoneValid, emailValid } = this.state;
 
     return (
       <View style={styles.wrapper}>
         <ScrollView style={styles.scrollView}>
             <View style={{flexDirection: 'row'}}>
-              <Text style={styles.heading}>Create a Event</Text>
-              <FontAwesomeIcon name="calendar" size={24} style={{marginTop: 18, color: colors.lightBlack,}}/>
+              <Text style={styles.heading}>Create User </Text>
+              <FontAwesomeIcon name="user-plus" size={24} style={{marginTop: 18, color: colors.lightBlack,}}/>
             </View>
           <View style={styles.content}>
             <View style={styles.inputWrapper}>
               <InputField
-                labelText="Title"
+                labelText="Name"
                 labelTextSize={16}
                 labelTextWeight="400"
                 inputType="text"
                 labelColor={colors.lightBlack}
                 textColor={colors.lightBlack}
-                placeholder="What's the event called?"
+                placeholder="Full Name"
                 defaultValue={location}
                 customStyle={{marginBottom: 10}}
                 borderBottomColor={colors.gray06}
                 inputStyle={{fontSize: 18, fontWeight: '600', paddingBottom: 5}}
-                onChangeText={this.handleTitleChange}
+                onChangeText={this.handleNameChange}
+                showCheckmark={nameValid}
+                autoFocus={true}
+              />
+            </View>
+            <View style={styles.inputWrapper}>
+              <InputField
+                labelText="Nick Name"
+                labelTextSize={16}
+                labelTextWeight="400"
+                inputType="text"
+                labelColor={colors.lightBlack}
+                textColor={colors.lightBlack}
+                placeholder="Is there another name to go by?"
+                defaultValue={location}
+                customStyle={{marginBottom: 10}}
+                borderBottomColor={colors.gray06}
+                inputStyle={{fontSize: 18, fontWeight: '600', paddingBottom: 5}}
+                onChangeText={this.handleNickNameChange}
                 showCheckmark={false}
                 autoFocus={true}
               />
             </View>
             <View style={styles.inputWrapper}>
               <InputField
-                labelText="Date"
-                inputType="text"
+                labelText="Email"
+                inputType="email"
                 labelTextSize={16}
                 labelTextWeight="400"
                 labelColor={colors.lightBlack}
                 textColor={colors.lightBlack}
-                placeholder="When's this thing happening?"
+                placeholder="Good email to contact"
                 defaultValue={location}
                 customStyle={{marginBottom: 10}}
                 borderBottomColor={colors.gray06}
                 inputStyle={{fontSize: 18, fontWeight: '600', paddingBottom: 5}}
-                onChangeText={this.handleDateChange}
-                showCheckmark={false}
+                onChangeText={this.handleEmailChange}
+                showCheckmark={emailValid}
                 autoFocus={true}
               />
             </View>
             <View style={styles.inputWrapper}>
               <InputField
-                labelText="Description"
-                inputType="text"
+                labelText="Phone"
+                inputType="number"
                 labelTextSize={16}
                 customStyle={{marginBottom: 10}}
                 labelTextWeight="400"
                 labelColor={colors.lightBlack}
                 textColor={colors.lightBlack}
-                placeholder="In a few words say what it's about?"
+                placeholder="Good number to text"
                 defaultValue={location}
                 borderBottomColor={colors.gray06}
                 inputStyle={{fontSize: 18, fontWeight: '600'}}
-                onChangeText={this.handleDescriptionChange}
-                showCheckmark={false}
+                onChangeText={this.handlePhoneChange}
+                showCheckmark={phoneValid}
                 autoFocus={true}
               />
             </View>
@@ -275,4 +304,4 @@ const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(ActionCreators, dispatch);
 };
 
-export default connect(null, mapDispatchToProps)(CreateEvent);
+export default connect(null, mapDispatchToProps)(CreateUser);

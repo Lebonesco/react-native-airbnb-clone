@@ -22,7 +22,7 @@ export default class InputField extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      secureInput: props.inputType === 'text' || props.inputType === 'email' ? false : true,
+      secureInput: props.inputType === 'text' || props.inputType === 'email' || props.inputType === 'number' ? false : true,
       scaleCheckmarkValue: new Animated.Value(0),
       inputValue: props.defaultValue,
     };
@@ -84,6 +84,7 @@ export default class InputField extends Component {
         keyboard = 'numeric';
         break;
     }
+
     let customInputStyle = inputStyle || {};
     if (!inputStyle || inputStyle && !inputStyle.paddingBottom) {
       customInputStyle.paddingBottom = 5;
